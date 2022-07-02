@@ -16,24 +16,29 @@
 package com.shubhamr69.text;
 
 import android.app.Activity;
+
 import android.content.Context;
+
 import android.graphics.Color;
+import android.graphics.Typeface;
+
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
+
 import android.widget.Button;
 import android.widget.TextView;
-import com.google.appinventor.components.annotations.DesignerComponent;
-import com.google.appinventor.components.annotations.SimpleEvent;
-import com.google.appinventor.components.annotations.SimpleFunction;
-import com.google.appinventor.components.annotations.SimpleObject;
-import com.google.appinventor.components.annotations.UsesLibraries;
-import com.google.appinventor.components.annotations.UsesPermissions;
+
+import com.google.appinventor.components.annotations.*;
+
 import com.google.appinventor.components.common.ComponentCategory;
+
 import com.google.appinventor.components.runtime.AndroidNonvisibleComponent;
 import com.google.appinventor.components.runtime.AndroidViewComponent;
 import com.google.appinventor.components.runtime.ButtonBase;
@@ -42,6 +47,7 @@ import com.google.appinventor.components.runtime.ComponentContainer;
 import com.google.appinventor.components.runtime.EventDispatcher;
 import com.google.appinventor.components.runtime.Label;
 import com.google.appinventor.components.runtime.TextBox;
+
 
 @DesignerComponent(category = ComponentCategory.EXTENSION, description = "An extension to change the style of text in some components. Made by SHUBHAMR69.\nSupported Components -> Labels, TextBoxes, CheckBoxes and Button-Based Components", iconName = "https://firebasestorage.googleapis.com/v0/b/shubhamr69firebase.appspot.com/o/Shubham_RDP_18%C3%9718.png?alt=media&token=586caaa9-9161-4404-b442-209740cafff7", nonVisible = true, version = 21, versionName = "1.0.0 release")
 @UsesLibraries(libraries = "")
@@ -66,17 +72,13 @@ public class ShubhamText extends AndroidNonvisibleComponent {
 
     private String objectToString(SpannableStringBuilder spannableStringBuilder) {
         String str = "";
-        for (int i = 0; i < spannableStringBuilder.length(); i++) {
-            str = str + spannableStringBuilder.charAt(i);
-        }
+        for (int i = 0; i < spannableStringBuilder.length(); i++) str += spannableStringBuilder.charAt(i);
         return str;
     }
 
     private String objectToString(CharSequence charSequence) {
         String str = "";
-        for (int i = 0; i < charSequence.length(); i++) {
-            str = str + charSequence.charAt(i);
-        }
+        for (int i = 0; i < charSequence.length(); i++) str += charSequence.charAt(i);
         return str;
     }
 
@@ -84,24 +86,21 @@ public class ShubhamText extends AndroidNonvisibleComponent {
         if (androidViewComponent instanceof Label) {
             TextView textView = (TextView) ((Label) androidViewComponent).getView();
             textView.setText(objectToString(textView.getText()));
-            return true;
         }
         else if (androidViewComponent instanceof ButtonBase) {
             Button button = (Button) ((ButtonBase) androidViewComponent).getView();
             button.setText(objectToString(button.getText()));
-            return true;
         }
         else if (androidViewComponent instanceof CheckBox) {
             android.widget.CheckBox checkBox = (android.widget.CheckBox) ((CheckBox) androidViewComponent).getView();
             checkBox.setText(objectToString(checkBox.getText()));
-            return true;
         }
         else if (androidViewComponent instanceof TextBox) {
             TextView textview = (TextView) ((TextBox)androidViewComponent).getView();
             textview.setText(objectToString(textview.getText()));
-            return true;
         }
         else return false;
+        return true;
     }
 
     private boolean setObject() {
@@ -110,40 +109,38 @@ public class ShubhamText extends AndroidNonvisibleComponent {
             this.text = textView.getText();
             this.obj = textView;
             return true;
-        } else if (this.obj instanceof ButtonBase) {
+        }
+        else if (this.obj instanceof ButtonBase) {
             Button button = (Button) ((ButtonBase) this.obj).getView();
             this.text = button.getText();
             this.obj = button;
             return true;
-        } else if (this.obj instanceof CheckBox) {
+        }
+        else if (this.obj instanceof CheckBox) {
             android.widget.CheckBox checkBox = (android.widget.CheckBox) ((CheckBox) this.obj).getView();
             this.text = checkBox.getText();
             this.obj = checkBox;
             return true;
-        } else if (!(this.obj instanceof TextBox)) {
-            return false;
-        } else {
-            TextView textView2 = (TextView) ((TextBox) this.obj).getView();
-            this.text = textView2.getText();
-            this.obj = textView2;
+        }
+        else if (this.obj instanceof TextBox) {
+            TextView textView = (TextView) ((TextBox) this.obj).getView();
+            this.text = textView.getText();
+            this.obj = textView;
             return true;
         }
+        else return false;
     }
 
-    private void setSpanText(Object obj2, int i, int i2, int i3) {
+    private void setSpanText(Object obj, int fromIndex, int toIndex, int flag) {
         this.ssb = new SpannableStringBuilder(this.text);
-        this.ssb.setSpan(obj2, i - 1, i2, i3);
+        this.ssb.setSpan(obj, fromIndex - 1, toIndex, flag);
         setText();
     }
 
     private void setText() {
-        if (this.obj instanceof TextView) {
-            ((TextView) this.obj).setText(this.ssb);
-        } else if (this.obj instanceof Button) {
-            ((Button) this.obj).setText(this.ssb);
-        } else if (this.obj instanceof android.widget.CheckBox) {
-            ((android.widget.CheckBox) this.obj).setText(this.ssb);
-        }
+        if (this.obj instanceof TextView) ((TextView) this.obj).setText(this.ssb);
+        else if (this.obj instanceof Button) ((Button) this.obj).setText(this.ssb);
+        else if (this.obj instanceof android.widget.CheckBox) ((android.widget.CheckBox) this.obj).setText(this.ssb);
     }
 
     @SimpleEvent(description = "Event raised when the given component is not supported.")
@@ -159,92 +156,65 @@ public class ShubhamText extends AndroidNonvisibleComponent {
     }
 
     @SimpleFunction(description = "Resets the given part from Bold and/or Italic to default.")
-    public void ResetBoldItalic(Object obj2, int i, int i2) {
-        this.obj = obj2;
-        if (setObject()) {
-            setSpanText(new StyleSpan(0), i, i2, 512);
-        } else {
-            invalid();
-        }
+    public void ResetBoldItalic(Object component, int fromIndex, int toIndex) {
+        this.obj = component;
+        if (setObject()) setSpanText(new StyleSpan(Typeface.NORMAL), fromIndex, toIndex, Spanned.SPAN_INTERMEDIATE);
+        else invalid();
     }
 
     @SimpleFunction(description = "Sets the html background color for the given component's mentioned text segment.")
-    public void SetBackgroundHtmlColor(Object obj2, int i, int i2, String str) {
-        this.obj = obj2;
-        if (setObject()) {
-            setSpanText(new BackgroundColorSpan(Color.parseColor(str)), i, i2, 512);
-        } else {
-            invalid();
-        }
+    public void SetBackgroundHtmlColor(Object component, int fromIndex, int toIndex, String htmlColor) {
+        this.obj = component;
+        if (setObject()) setSpanText(new BackgroundColorSpan(Color.parseColor(htmlColor)), fromIndex, toIndex, Spanned.SPAN_INTERMEDIATE);
+        else invalid();
     }
 
     @SimpleFunction(description = "Sets font-bold for the given component's mentioned text segment.")
-    public void SetBold(Object obj2, int i, int i2) {
-        this.obj = obj2;
-        if (setObject()) {
-            setSpanText(new StyleSpan(1), i, i2, 512);
-        } else {
-            invalid();
-        }
+    public void SetBold(Object component, int fromIndex, int toIndex) {
+        this.obj = component;
+        if (setObject()) setSpanText(new StyleSpan(Typeface.BOLD), fromIndex, toIndex, Spanned.SPAN_INTERMEDIATE);
+        else invalid();
     }
 
     @SimpleFunction(description = "Sets font-bold-italic for the given component's mentioned text segment.")
-    public void SetBoldItalic(Object obj2, int i, int i2) {
-        this.obj = obj2;
-        if (setObject()) {
-            setSpanText(new StyleSpan(3), i, i2, 512);
-        } else {
-            invalid();
-        }
+    public void SetBoldItalic(Object component, int fromIndex, int toIndex) {
+        this.obj = component;
+        if (setObject()) setSpanText(new StyleSpan(Typeface.BOLD_ITALIC), fromIndex, toIndex, Spanned.SPAN_INTERMEDIATE);
+        else invalid();
     }
 
     @SimpleFunction(description = "Sets font-italic for the given component's mentioned text segment.")
-    public void SetItalic(Object obj2, int i, int i2) {
-        this.obj = obj2;
-        if (setObject()) {
-            setSpanText(new StyleSpan(2), i, i2, 512);
-        } else {
-            invalid();
-        }
+    public void SetItalic(Object component, int fromIndex, int toIndex) {
+        this.obj = component;
+        if (setObject()) setSpanText(new StyleSpan(Typeface.ITALIC), fromIndex, toIndex, Spanned.SPAN_INTERMEDIATE);
+        else invalid();
     }
 
     @SimpleFunction(description = "Sets the text style with Absolute Size. Other features same as the <mark>SetStyleRelative</mark> method.")
-    public void SetSizeAbsolute(Object obj2, int i, int i2, int i3) {
-        this.obj = obj2;
-        if (setObject()) {
-            setSpanText(new AbsoluteSizeSpan(i3), i, i2, 512);
-        } else {
-            invalid();
-        }
+    public void SetSizeAbsolute(Object component, int fromIndex, int toIndex, int absoluteSize) {
+        this.obj = component;
+        if (setObject()) setSpanText(new AbsoluteSizeSpan(absoluteSize), fromIndex, toIndex, Spanned.SPAN_INTERMEDIATE);
+        else invalid();
     }
 
     @SimpleFunction(description = "Sets the relative text size for the given part of the text.")
-    public void SetSizeRelative(Object obj2, int i, int i2, float f) {
-        this.obj = obj2;
-        if (setObject()) {
-            setSpanText(new RelativeSizeSpan(f), i, i2, 512);
-        } else {
-            invalid();
-        }
+    public void SetSizeRelative(Object component, int fromIndex, int toIndex, float relativeSize) {
+        this.obj = component;
+        if (setObject()) setSpanText(new RelativeSizeSpan(relativeSize), fromIndex, toIndex, Spanned.SPAN_INTERMEDIATE);
+        else invalid();
     }
 
     @SimpleFunction(description = "Sets the html text color of the given component's mentioned text segment.")
-    public void SetTextHtmlColor(Object obj2, int i, int i2, String str) {
-        this.obj = obj2;
-        if (setObject()) {
-            setSpanText(new ForegroundColorSpan(Color.parseColor(str)), i, i2, 512);
-        } else {
-            invalid();
-        }
+    public void SetTextHtmlColor(Object component, int fromIndex, int toIndex, String htmlColor) {
+        this.obj = component;
+        if (setObject()) setSpanText(new ForegroundColorSpan(Color.parseColor(htmlColor)), fromIndex, toIndex, Spanned.SPAN_INTERMEDIATE);
+        else invalid();
     }
 
     @SimpleFunction(description = "Sets the font typeface for the given component's mentioned text segment.")
-    public void SetTypeface(Object obj2, int i, int i2, String str) {
-        this.obj = obj2;
-        if (setObject()) {
-            setSpanText(new TypefaceSpan(str), i, i2, 512);
-        } else {
-            invalid();
-        }
+    public void SetTypeface(Object component, int fromIndex, int toIndex, String typeface) {
+        this.obj = component;
+        if (setObject()) setSpanText(new TypefaceSpan(typeface),fromIndex, toIndex, Spanned.SPAN_INTERMEDIATE);
+        else invalid();
     }
 }
