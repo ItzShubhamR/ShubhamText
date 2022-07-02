@@ -6,7 +6,8 @@
 
 /*
  * This file is not same as the original extension source code.
- * The reason is, I can't directly Copy-Paste every content from Niotron IDE.
+ * The reason is, I can't directly Copy-Paste every content from Niotron IDE at the present moment. 
+ * As I'm using an Android device to write the extension.
  * So I had to decompile my own extension here. 😅
  * But that doesn't matter.
  * As this file is for learning purposes only, it contains everything you need to "learn" from this.
