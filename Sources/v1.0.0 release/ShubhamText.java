@@ -93,8 +93,8 @@ public class ShubhamText extends AndroidNonvisibleComponent {
             android.widget.CheckBox checkBox = (android.widget.CheckBox) ((CheckBox) androidViewComponent).getView();
             checkBox.setText(objectToString(checkBox.getText()));
             return true;
-        } else if (!(androidViewComponent instanceof TextBox)) {
-            return false;
+        } else if (androidViewComponent instanceof TextBox) {
+            TextView textview = (TextView) ((TextBox)androidViewComponent).getView();
         } else {
             TextView textView2 = (TextView) ((TextBox) androidViewComponent).getView();
             textView2.setText(objectToString(textView2.getText()));
